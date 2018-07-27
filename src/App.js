@@ -13,17 +13,23 @@ class App extends Component {
     this.setState({ input });
   };
 
+  convertInput = event => {
+    this.setState({ output: "test" });
+  };
+
   render() {
     return (
       <div className="App">
         <h1>JSON Transformation</h1>
-        {this.state.input}
         <textarea
           className="input box"
           value={this.state.input}
           onChange={this.handleInput}
         />
-        <textarea className="output box" disabled />
+        <textarea className="output box" value={this.state.output} disabled />
+        <button className="button" onClick={this.convertInput}>
+          Convert
+        </button>
       </div>
     );
   }
