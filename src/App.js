@@ -13,8 +13,21 @@ class App extends Component {
     this.setState({ input });
   };
 
+  reformatInput = input => {
+    const inputObject = JSON.parse(input);
+    let inputArray = [];
+    Object.keys(inputObject).map(key => {
+      return inputObject[key].map(item => {
+        inputArray.push(item);
+      });
+    });
+    return inputArray;
+  };
+
   convertInput = event => {
-    this.setState({ output: "test" });
+    const input = this.state.input;
+    const output = this.reformatInput(input);
+    this.setState({ output });
   };
 
   render() {
@@ -26,7 +39,11 @@ class App extends Component {
           value={this.state.input}
           onChange={this.handleInput}
         />
-        <textarea className="output box" value={this.state.output} disabled />
+        <textarea
+          className="output box"
+          value={JSON.stringify(this.state.output, null, 2)}
+          disabled
+        />
         <button className="button" onClick={this.convertInput}>
           Convert
         </button>
