@@ -5,7 +5,8 @@ import "./App.css";
 class App extends Component {
   state = {
     input: "",
-    output: ""
+    output: "",
+    error: false
   };
 
   handleInput = event => {
@@ -13,21 +14,50 @@ class App extends Component {
     this.setState({ input });
   };
 
+  convertInput = () => {
+    const { input, error } = this.state;
+    const isInputObject = this.isInputObject(input);
+
+    if (isInputObject) {
+      const reformattedInput = this.reformatInput(input);
+      const output = this.transformInput(reformattedInput, null);
+
+      this.setState({ output, error: false });
+    } else {
+      this.setState({ output: "Wrong input format", error: true });
+    }
+  };
+
+  isInputObject = input => {
+    try {
+      this.reformatInput(input);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   reformatInput = input => {
     const inputObject = JSON.parse(input);
     let inputArray = [];
     Object.keys(inputObject).map(key => {
       return inputObject[key].map(item => {
-        inputArray.push(item);
+        return inputArray.push(item);
       });
     });
     return inputArray;
   };
 
-  convertInput = event => {
-    const input = this.state.input;
-    const output = this.reformatInput(input);
-    this.setState({ output });
+  transformInput = (input, parent) => {
+    let result = [];
+    input.filter(item => item.parent_id === parent).map(item => {
+      let children = this.transformInput(input, item.id);
+      if (children.length) {
+        item.children = children;
+      }
+      return result.push(item);
+    });
+    return result;
   };
 
   render() {
@@ -47,6 +77,7 @@ class App extends Component {
         <button className="button" onClick={this.convertInput}>
           Convert
         </button>
+        {this.state.error ? "Error is True" : "Error is false"}
       </div>
     );
   }
