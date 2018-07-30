@@ -1,16 +1,14 @@
 import React from "react";
 
 const OutputBox = props => {
-  const { output } = props;
+  const { output, error, clean } = props;
 
   return (
-    <div>
-      <textarea
-        className="box output"
-        value={JSON.stringify(output, null, 2)}
-        disabled
-      />
-    </div>
+    <textarea
+      className={(error ? "error " : "") + "box output"}
+      value={error || clean ? output : JSON.stringify(output, null, 4)}
+      disabled
+    />
   );
 };
 

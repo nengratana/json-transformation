@@ -1,9 +1,69 @@
 .App {
+  display: block;
   text-align: center;
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.display {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 5px;
 }
 
 .box {
-  width: 250px;
-  height: 300px;
-  margin: 0 10px;
+  height: 600px;
+  margin: 10px 10px;
+  padding: 30px;
+  font-size: 16px;
+  color: #666;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.input {
+  border: 1px solid #999;
+}
+
+.output {
+  background-color: #f0faf9;
+  border: 1px solid #d7f2f0;
+  color:  #00ad9f;
+}
+
+.error {
+  background-color: #fde8dc;
+  border: 1px solid #fb6d77;
+  color:  #fb6d77;
+  text-align: center;
+  font-size: 24px;
+}
+
+.button {
+  margin: 0 5px;
+  padding: 7px 20px;
+  border: 0px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px
+}
+
+.convert {
+  background-color: #00ad9f;
+  line-height: 24px;
+  color: white;
+}
+
+.convert:hover {
+  background-color: #00c5b5
+}
+
+.clear {
+  background-color: #ccc;
+  line-height: 24px;
+  color: #666;
+}
+
+.clear:hover {
+  background-color: #ddd;
 }

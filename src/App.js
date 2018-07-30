@@ -6,8 +6,9 @@ import "./App.css";
 
 class App extends Component {
   state = {
-    input: "",
-    output: "",
+    input: " ",
+    output: " ",
+    isClean: true,
     error: false
   };
 
@@ -17,14 +18,18 @@ class App extends Component {
   };
 
   convertInput = () => {
-    const { input, error } = this.state;
+    const { input } = this.state;
+    // Check if Input is an Object
     const isInputObject = this.isInputObject(input);
 
     if (isInputObject) {
+      // Pull each object from input and reformatted into a single array
+      // [{id:1..},{id:2...},{id:3...}]
       const reformattedInput = this.reformatInput(input);
-      const output = this.transformInput(reformattedInput, null);
 
-      this.setState({ output, error: false });
+      // Transform the reformatted array into expected output
+      const output = this.transformInput(reformattedInput, null);
+      this.setState({ output, error: false, isClean: false });
     } else {
       this.setState({ output: "Wrong input format", error: true });
     }
@@ -40,10 +45,14 @@ class App extends Component {
   };
 
   reformatInput = input => {
+    // Convert input from String into Object
     const inputObject = JSON.parse(input);
     let inputArray = [];
+
     Object.keys(inputObject).map(key => {
+      // Loop through each Object
       return inputObject[key].map(item => {
+        // Loop inside each array for inner Objects and push them into inputArray
         return inputArray.push(item);
       });
     });
@@ -52,31 +61,46 @@ class App extends Component {
 
   transformInput = (input, parent) => {
     let result = [];
-    input.filter(item => item.parent_id === parent).map(item => {
-      let children = this.transformInput(input, item.id);
-      if (children.length) {
-        item.children = children;
-      }
-      return result.push(item);
-    });
+    // Filter input with parent_id start with null
+    input
+      .filter(item => item.parent_id === parent)
+      // Loop through filtered item
+      .map(item => {
+        let children = this.transformInput(input, item.id);
+        // If current item still has children
+        if (children.length) {
+          // Run transformInput() again with current item is as parent_id
+          item.children = children;
+        }
+        return result.push(item);
+      });
     return result;
+  };
+
+  clearInput = () => {
+    this.setState({ input: "" });
   };
 
   render() {
     return (
       <div className="App">
         <h1>JSON Transformation</h1>
-        <InputBox input={this.state.input} handleInput={this.handleInput} />
-        <OutputBox output={this.state.output} error={this.state.error} />
-        <textarea
-          className="output box"
-          value={JSON.stringify(this.state.output, null, 2)}
-          disabled
-        />
-        <button className="button" onClick={this.convertInput}>
-          Convert
-        </button>
-        {this.state.error ? "Error is True" : "Error is false"}
+        <div className="display">
+          <InputBox input={this.state.input} handleInput={this.handleInput} />
+          <OutputBox
+            output={this.state.output}
+            error={this.state.error}
+            clean={this.state.isClean}
+          />
+        </div>
+        <div className="row">
+          <button className="button clear" onClick={this.clearInput}>
+            CLEAR
+          </button>
+          <button className="button convert" onClick={this.convertInput}>
+            CONVERT INPUT
+          </button>
+        </div>
       </div>
     );
   }
