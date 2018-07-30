@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+// Import Component
+import InputBox from "./InputBox";
+import OutputBox from "./OutputBox";
 import "./App.css";
 
 class App extends Component {
@@ -64,11 +66,8 @@ class App extends Component {
     return (
       <div className="App">
         <h1>JSON Transformation</h1>
-        <textarea
-          className="input box"
-          value={this.state.input}
-          onChange={this.handleInput}
-        />
+        <InputBox input={this.state.input} handleInput={this.handleInput} />
+        <OutputBox output={this.state.output} error={this.state.error} />
         <textarea
           className="output box"
           value={JSON.stringify(this.state.output, null, 2)}
