@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // Import Component
 import InputBox from "./InputBox";
 import OutputBox from "./OutputBox";
+import example from "./example";
 import "./App.css";
 
 class App extends Component {
@@ -100,6 +101,12 @@ class App extends Component {
           <button className="button convert" onClick={this.convertInput}>
             CONVERT INPUT
           </button>
+        </div>
+        <div className="row">
+          <h2 className="example">Example Input:</h2>
+          <pre>
+            <code>{JSON.stringify(example, null, 2)} </code>
+          </pre>
         </div>
       </div>
     );
