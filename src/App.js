@@ -63,12 +63,15 @@ class App extends Component {
 
   findTopParent = input => {
     let topParentID = null;
-    //
+    // Loop through input
     input.map(candidate => {
+      // Find whether each item has parents or not
       const hasParent = input.filter(
         candidateParent => candidateParent.id === candidate.parent_id
       ).length;
+      // Item with no parent will be a Top Parent
       if (hasParent === 0) {
+        // Assign parent_id to topParentID
         return (topParentID = candidate.parent_id);
       }
     });
