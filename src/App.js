@@ -27,9 +27,10 @@ class App extends Component {
       // Pull each object from input and reformatted into a single array
       // [{id:1..},{id:2...},{id:3...}]
       const reformattedInput = this.reformatInput(input);
-
+      const topParent = this.findTopParent(reformattedInput);
+      console.log(topParent);
       // Transform the reformatted array into expected output
-      const output = this.transformInput(reformattedInput, null);
+      const output = this.transformInput(reformattedInput, topParent);
       this.setState({ output, error: false, isClean: false });
     } else {
       this.setState({ output: "Wrong input format", error: true });
@@ -58,6 +59,20 @@ class App extends Component {
       });
     });
     return inputArray;
+  };
+
+  findTopParent = input => {
+    let topParentID = null;
+    //
+    input.map(candidate => {
+      const hasParent = input.filter(
+        candidateParent => candidateParent.id === candidate.parent_id
+      ).length;
+      if (hasParent === 0) {
+        return (topParentID = candidate.parent_id);
+      }
+    });
+    return topParentID;
   };
 
   transformInput = (input, parent) => {
